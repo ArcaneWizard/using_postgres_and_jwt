@@ -3,13 +3,14 @@ const app = express();
 const cors = require("cors");
 const pool = require("./db");
 
-require('dotenv').config();
-
 //middleware
 app.use(cors());
 app.use(express.json());
+require('dotenv').config();
 
 //ROUTES//
+const users = require('./../client/src/routes/api/users')
+app.use('/api/users', users);
 
 //create a todo
 app.post("/todos", async (req, res) => {

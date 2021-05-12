@@ -5,7 +5,7 @@ function InputTodo(props) {
     const [description, setDescription] = useState("");
 
     const onSubmitForm = e => {
-        e.preventDefault(); 
+        e.preventDefault();
 
         try {
             const body = { description };
@@ -22,7 +22,7 @@ function InputTodo(props) {
 
     return (
         <div>
-            <h1 className="text-center mt-5">Pern Todo List</h1>
+            <h1 className="text-center mt-5">Todo List</h1>
             <form className="mt-4 d-flex justify-content-center" onSubmit={onSubmitForm}>
                 <div className="form-group col-lg-6 d-flex">
                     <input
