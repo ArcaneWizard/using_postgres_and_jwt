@@ -3,16 +3,18 @@ const app = express();
 const cors = require("cors");
 const pool = require("./db");
 
-//middleware
+//middleware     
 app.use(cors());
 app.use(express.json());
 require('dotenv').config();
+
+console.log(process.env.PASSWORD);
 
 //ROUTES//
 const users = require('./../client/src/routes/api/users')
 app.use('/api/users', users);
 
-//create a todo
+//create a todo  
 app.post("/todos", async (req, res) => {
     try {
 
