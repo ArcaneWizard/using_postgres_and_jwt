@@ -7,3 +7,5 @@ HOST="localhost"
 PORT=5432
 DATABASE={your database}
  ```
+
+Run npm install dotenv, and you're set!
