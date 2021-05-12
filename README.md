@@ -1,8 +1,8 @@
 Make sure to add an env file with the following information to connect the app to your PostgreSQL server:
 
-USERNAME="<username>"
-PASSWORD="<password>"
+USERNAME={your username}
+PASSWORD={your password}
 HOST="localhost"
 PORT=5432
-DATABASE="<database>"
+DATABASE={your database}
  
