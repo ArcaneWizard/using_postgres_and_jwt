@@ -1,18 +1,24 @@
+
+//secure storage
+require('dotenv').config();
+process.env["NODE_CONFIG_DIR"] = "./client/config";
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
+const auth = require("./../client/src/middleware/auth");
 
-require('dotenv').config();
-
-//middleware
+//middleware     
 app.use(cors());
 app.use(express.json());
 
 //ROUTES//
+app.use('/api/users', require('./../client/src/routes/api/users'));
+app.use('/api/auth', require('./../client/src/routes/api/auth'));
 
-//create a todo
-app.post("/todos", async (req, res) => {
+//create a todo  
+app.post("/todos", auth, async (req, res) => {
     try {
 
         const { description } = req.body;
@@ -49,7 +55,7 @@ app.get("/todos/:id", async (req, res) => {
 });
 
 //update a todo
-app.put("/todos/:id", async (req, res) => {
+app.put("/todos/:id", auth, async (req, res) => {
     try {
         const { id } = req.params;
         const { description } = req.body;
@@ -66,7 +72,7 @@ app.put("/todos/:id", async (req, res) => {
 });
 
 //delete a todo
-app.delete("/todos/:id", (req, res) => {
+app.delete("/todos/:id", auth, (req, res) => {
     try {
         const { id } = req.params;
         pool.query("DELETE FROM todo WHERE todo_id = $1", [id]).then(
