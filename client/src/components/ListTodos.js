@@ -1,12 +1,18 @@
 import React, { Fragment, useEffect, useState } from "react";
 import EditTodo from "./EditTodo";
+import { tokenFetchHeader } from "../actions/authActions";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 
 function ListTodos(props) {
+
+    const isAuthenticated = props.isAuthenticated;
 
     const deleteTodo = todo_id => {
         try {
             fetch(`http://localhost:5000/todos/${todo_id}`, {
                 method: "DELETE",
+                headers: tokenFetchHeader()
             }).then(setTimeout(() => { props.change() }, 100));
         } catch (err) {
             console.error(err.message);
@@ -24,13 +30,19 @@ function ListTodos(props) {
             </thead>
             <tbody>
                 {props.todos.map(todo => (
-                    <tr tr key={todo.todo_id} >
+                    <tr key={todo.todo_id} >
                         <td>{todo.description}</td>
                         <td>
-                            <EditTodo change={() => props.change()} todo={todo} />
+                            {isAuthenticated
+                                ? <EditTodo change={() => props.change()} todo={todo} />
+                                : null
+                            }
                         </td>
                         <td>
-                            <button className="btn btn-danger" onClick={() => deleteTodo(todo.todo_id)}>Delete</button>
+                            {isAuthenticated
+                                ? <button className="btn btn-danger" onClick={() => deleteTodo(todo.todo_id)}>Delete</button>
+                                : null
+                            }
                         </td>
                     </tr>
                 ))}
@@ -40,4 +52,12 @@ function ListTodos(props) {
     </Fragment >
 }
 
-export default ListTodos;
+ListTodos.propTypes = {
+    isAuthenticated: PropTypes.bool
+}
+
+const mapStateToProps = (state) => ({
+    isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, {})(ListTodos);
