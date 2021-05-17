@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import { tokenFetchHeader } from '../actions/authActions';
 
 function InputTodo(props) {
 
@@ -10,10 +11,14 @@ function InputTodo(props) {
         try {
             const body = { description };
 
+            // axios.post("http://localhost:5000/todos/", body, tokenConfig(store.getState))
+            //     .then(setTimeout(() => { props.change() }, 100))
+            //     .catch(err => console.log(err));
+
             fetch("http://localhost:5000/todos/", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body)
+                body: JSON.stringify(body),
+                headers: tokenFetchHeader()
             }).then(setTimeout(() => { props.change() }, 100));;
         } catch (err) {
             console.error(err.message);

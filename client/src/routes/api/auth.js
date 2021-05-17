@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
 
     //Simple validaiton 
     if (!email || !password) {
-        return res.status(400).json({ Msg: 'Please enter all fields' });
+        return res.status(400).json({ msg: 'Please enter all fields' });
     }
 
     //Check for existing user 
@@ -40,9 +40,14 @@ router.post('/', async (req, res) => {
     }
 })
 
+
 router.get('/user', auth, async (req, res) => {
-    const user = await pool.query("SELECT name, email FROM users WHERE id = $1", [req.payload.id]);
-    return res.json(user.rows[0]);
+    try {
+        const user = await pool.query("SELECT name, email FROM users WHERE id = $1", [req.payload.id]);
+        return res.json(user.rows[0]);
+    } catch (err) {
+        res.json({ msg: "Couldn't return user info" });
+    }
 });
 
 module.exports = router;
